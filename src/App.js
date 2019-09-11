@@ -22,7 +22,8 @@ import TodoItem from './TodoItem';
       let todos = this.state.todoList.map((item,index)=>{
         return(
           <li key ={index}>
-             <TodoItem todo={item} onToggle={this.toggle.bind(this)} />
+          <TodoItem todo={item} onToggle={this.toggle.bind(this)} 
+            onDelete={this.delete.bind(this)}/>
           </li>
         )
       }) 
@@ -63,7 +64,11 @@ import TodoItem from './TodoItem';
         todoList: this.state.todoList
       })
     }
-  }
+    delete(event, todo){
+      todo.deleted = true
+      this.setState(this.state) 
+    }
+
 
 export default App;
 
