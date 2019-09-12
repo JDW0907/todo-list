@@ -47,13 +47,14 @@ import TodoItem from './TodoItem';
       todo.status = todo.status === 'completed' ? '' : 'completed'
       this.setState(this.state) 
     }
-    }
+
     changeTitle(event){
       this.setState({
         newTodo: event.target.value,
         todoList: this.state.todoList
       })
     }
+
     addTodo(event){
       this.state.todoList.push({
         id: idMaker(),
@@ -70,7 +71,7 @@ import TodoItem from './TodoItem';
       todo.deleted = true
       this.setState(this.state) 
     }
-
+  }
 
 export default App;
 
