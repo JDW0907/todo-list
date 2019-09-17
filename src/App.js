@@ -7,15 +7,8 @@ import TodoItem from './TodoItem';
 import * as localStore from './localStore';
 
 
-  class App extends Component {
-    constructor(props){
-      super(props)
-      this.state = {
-        newTodo: '',
-        todoList: localStore.load('todoList') || []
-        
-      }
-    }
+
+  
      render(){
        
       let todos = this.state.todoList
