@@ -11,6 +11,7 @@ import UserDialog from './UserDialog';
     constructor(props){
       super(props)
       this.state = {
+        user: {},
         newTodo: '',
         todoList: []
         
@@ -29,7 +30,7 @@ import UserDialog from './UserDialog';
       }) 
      return(
        <div className="App">
-         <h1>我的待办</h1>
+         <h1>{this.state.user.username||'我'}的待办</h1>
          <div className="inputWrapper">
          <TodoInput content={this.state.newTodo} 
             onChange={this.changeTitle.bind(this)}
@@ -38,11 +39,14 @@ import UserDialog from './UserDialog';
          <ol className="todoList">
            {todos}
          </ol>
-         <UserDialog />
+         <UserDialog onSignUp={this.onSignUp.bind(this)}/>
        </div>
-     )}
-
-       
+     )
+    }
+    onSignUp(user){
+      this.state.user = user
+      this.setState(this.state)
+    }
      
      
      componentDidUpdate(){
