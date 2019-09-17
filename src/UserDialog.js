@@ -40,6 +40,7 @@ export default class UserDialog extends Component{
         }
         signIn(username, password, success, error)
       }
+      
   changeFormData(key, e){
     let stateCopy = JSON.parse(JSON.stringify(this.state))  // 用 JSON 深拷贝
     stateCopy.formData[key] = e.target.value
