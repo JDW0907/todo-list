@@ -5,8 +5,8 @@ import './reset.css';
 import TodoInput from './TodoInput';
 import TodoItem from './TodoItem';
 import UserDialog from './UserDialog';
-
 import {getCurrentUser, signOut, TodoModel} from './leanCloud'
+
 
 
     class App extends Component {
@@ -28,6 +28,7 @@ import {getCurrentUser, signOut, TodoModel} from './leanCloud'
       }
     }
     render(){ 
+
       let todos = this.state.todoList
       .filter((item)=> !item.deleted)
       .map((item,index)=>{
@@ -38,6 +39,7 @@ import {getCurrentUser, signOut, TodoModel} from './leanCloud'
           </li>
         )
       }) 
+
      return(
        <div className="App">
         <h1>{this.state.user.username||'我'}的待办
@@ -55,13 +57,13 @@ import {getCurrentUser, signOut, TodoModel} from './leanCloud'
           null :
           <UserDialog
             onSignUp={this.onSignUpOrSignIn.bind(this)}
-          onSignIn={this.onSignUpOrSignIn.bind(this)}/>}
+            onSignIn={this.onSignUpOrSignIn.bind(this)}/>}
        </div>
      )
     }
     signOut(){
       signOut()
-      let stateCopy = JSON.parse(JSON.stringify(this.state))
+    let stateCopy = JSON.parse(JSON.stringify(this.state))
     stateCopy.user = {}
     this.setState(stateCopy)
   }
