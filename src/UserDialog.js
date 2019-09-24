@@ -68,25 +68,7 @@ export default class UserDialog extends Component{
   }
   render(){
    
-      let signInForm = (
-        <form className="signIn" onSubmit={this.signIn.bind(this)}> {/* 登录*/}
-          <div className="row">
-            <label>用户名</label>
-            <input type="text" value={this.state.formData.username}
-            onChange={this.changeFormData.bind(this, 'username')}/>
-            {/* bind 不仅可以绑定 this，还可以绑定第一个参数 */}
-          </div>
-          <div className="row">
-            <label>密码</label>
-            <input type="password" value={this.state.formData.password}
-            onChange={this.changeFormData.bind(this, 'password')}/>
-          </div>
-          <div className="row actions">
-            <button type="submit">登录</button>
-            <a href="#" onClick={this.showForgotPassword.bind(this)}>忘记密码了？</a>
-          </div>
-        </form>
-      ) 
+     
       let signInOrSignUp = (
         <div className="signInOrSignUp">
           <nav>
@@ -107,7 +89,15 @@ export default class UserDialog extends Component{
               onSubmit={this.signUp.bind(this)}
               onChange={this.changeFormData.bind(this)}/>
             : null}
-            {this.state.selected === 'signIn' ? signInForm : null}
+             onChange={this.changeFormData.bind(this)}
+            />
+            : null}
+          {this.state.selected === 'signIn' ?
+            <SignInForm formData={this.state.formData}
+              onChange={this.changeFormData.bind(this)}
+              onSubmit={this.signIn.bind(this)}
+              onForgotPassword={this.showForgotPassword.bind(this)}
+            />
           </div>
         </div>
       )
