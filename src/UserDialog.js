@@ -68,7 +68,6 @@ export default class UserDialog extends Component{
   }
   render(){
    
-     
       let signInOrSignUp = (
         <div className="signInOrSignUp">
           <nav>
@@ -87,17 +86,17 @@ export default class UserDialog extends Component{
           {this.state.selected === 'signUp' ?
             <SignUpForm formData={this.state.formData}
               onSubmit={this.signUp.bind(this)}
-              onChange={this.changeFormData.bind(this)}/>
-            : null}
-             onChange={this.changeFormData.bind(this)}
+              onChange={this.changeFormData.bind(this)}
             />
             : null}
-          {this.state.selected === 'signIn' ?
+             {this.state.selected === 'signIn' ?
             <SignInForm formData={this.state.formData}
               onChange={this.changeFormData.bind(this)}
               onSubmit={this.signIn.bind(this)}
               onForgotPassword={this.showForgotPassword.bind(this)}
             />
+            : null}
+         
           </div>
         </div>
       )
