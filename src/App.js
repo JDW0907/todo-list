@@ -95,7 +95,7 @@ import {getCurrentUser, signOut, TodoModel} from './leanCloud'
     addTodo(event){
       let newTodo = {
         title: event.target.value,
-        status: null,
+        status: '',
         deleted: false
       }
       TodoModel.create(newTodo, (id) => {
