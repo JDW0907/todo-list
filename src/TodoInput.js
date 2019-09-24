@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './TodoInput.css'
 
 export default class TodoInput extends Component {
@@ -10,8 +10,9 @@ export default class TodoInput extends Component {
   }
   submit(e){
     if (e.key === 'Enter') {
-      this.props.onSubmit(e)
-    }
+      if (e.target.value.trim() !== '') {
+        props.onSubmit(e)
+      }
   }
   changeTitle(e){
     this.props.onChange(e)
