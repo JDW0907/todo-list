@@ -6,7 +6,7 @@ import TodoInput from './TodoInput';
 import TodoItem from './TodoItem';
 import UserDialog from './UserDialog';
 
-import {getCurrentUser, signOut} from './leanCloud'
+import {getCurrentUser, signOut, TodoModel} from './leanCloud'
 
 
     class App extends Component {
@@ -25,7 +25,7 @@ import {getCurrentUser, signOut} from './leanCloud'
       .map((item,index)=>{
         return(
           <li key ={index}>
-          <TodoItem todo={item} onToggle={this.toggle.bind(this)} 
+          <TodoItem todo={item} onToggle={this.toggle.bind(this)}
             onDelete={this.delete.bind(this)}/>
           </li>
         )
@@ -43,17 +43,17 @@ import {getCurrentUser, signOut} from './leanCloud'
          <ol className="todoList">
            {todos}
          </ol>
-         {this.state.user.id ? 
-          null : 
-          <UserDialog 
-          onSignUp={this.onSignUpOrSignIn.bind(this)} 
+         {this.state.user.id ?
+          null :
+          <UserDialog
+            onSignUp={this.onSignUpOrSignIn.bind(this)}
           onSignIn={this.onSignUpOrSignIn.bind(this)}/>}
        </div>
      )
     }
     signOut(){
       signOut()
-    let stateCopy = JSON.parse(JSON.stringify(this.state))
+      let stateCopy = JSON.parse(JSON.stringify(this.state))
     stateCopy.user = {}
     this.setState(stateCopy)
   }
@@ -79,29 +79,28 @@ import {getCurrentUser, signOut} from './leanCloud'
     }
 
     addTodo(event){
-      this.state.todoList.push({
-        id: idMaker(),
+      let newTodo = {
         title: event.target.value,
         status: null,
         deleted: false
-      })
-      this.setState({
-        newTodo: '',
-        todoList: this.state.todoList
+      }
+      TodoModel.create(newTodo, (id) => {
+        newTodo.id = id
+        this.state.todoList.push(newTodo)
+        this.setState({
+          newTodo: '',
+          todoList: this.state.todoList
+        })
+      }, (error) => {
+        console.log(error)
       })
     }
     delete(event, todo){
       todo.deleted = true
-      this.setState(this.state) 
+      this.setState(this.state)
     }
   }
 
 export default App;
 
 
-let id = 0
-
-function idMaker(){
-  id += 1
-  return id
-}
