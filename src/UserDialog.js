@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './UserDialog.css';
 import {signUp, signIn, sendPasswordResetEmail} from './leanCloud';
 import ForgotPasswordForm from './ForgotPasswordForm'
-import SignInOrSignUp from './SignInOrSignUp'
+import SignInOrSignUp from './SignInorSignUp'
 
 export default class UserDialog extends Component{
     constructor(props){
