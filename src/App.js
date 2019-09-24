@@ -104,8 +104,10 @@ import {getCurrentUser, signOut, TodoModel} from './leanCloud'
       })
     }
     delete(event, todo){
-      todo.deleted = true
-      this.setState(this.state)
+      TodoModel.destroy(todo.id, () => {
+        todo.deleted = true
+        this.setState(this.state)
+      })
     }
   }
 
