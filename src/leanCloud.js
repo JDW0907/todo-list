@@ -17,6 +17,7 @@ export function signUp(email,username, password, successFn, errorFn){
  user.setPassword(password)
  // 设置邮箱
  user.setEmail(email)
+
  user.signUp().then(function (loginedUser) {
    let user = getUserFromAVUser(loginedUser)
    successFn.call(null, user)
@@ -35,6 +36,7 @@ export function signIn(username, password, successFn, errorFn){
     errorFn.call(null, error)
   })
 }
+
 export function getCurrentUser(){
   let user = AV.User.current()
   if(user){
@@ -53,7 +55,7 @@ export function sendPasswordResetEmail(email, successFn, errorFn){
   AV.User.requestPasswordReset(email).then(function (success) {
     successFn.call() 
   }, function (error) {
-    console.dir(error)
+    errorFn.call(null, error)
   })
 }
 
