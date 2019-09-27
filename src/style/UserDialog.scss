@@ -1,0 +1,47 @@
+.UserDialog-Wrapper {
+    /*全屏*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /*内容居中*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(../img/login.jpg) center center no-repeat;
+    background-size: cover;
+  
+    > .UserDialog {
+      border: 1px solid;
+      border-radius: 4px;
+      width: 480px;
+      height: 450px;
+      background: white;
+      border: 1px solid #aaa;
+      box-shadow: 0 0 3em hsla(0, 0%, 0%, 0.35);
+      position: fixed;
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      transition: all 2s;
+      animation: mymove 1s;
+      .forgotPassword {
+        > h3 {
+          padding: 1em;
+        }
+        > form {
+          padding: 0 1em 1em;
+        }
+      }
+      @keyframes mymove {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    }
+  }

@@ -2,31 +2,39 @@ import AV from 'leancloud-storage'
 
 var APP_ID = '9Mb0BdKRJtWvdKwNCw2tM8wM-gzGzoHsz'
 var APP_KEY = '5Y5a7OL5VFy8MpaTdd31UCFG'
+
 AV.init({
   appId: APP_ID,
   appKey: APP_KEY
 })
 
+function getUserFromAVUser(AVUser) {
+  return {
+    id: AVUser.id,
+    ...AVUser.attributes
+  }
+}
+
 export default AV
 
-// 所有跟 Todo 相关的 LeanCloud 操作都放到这里
-export const TodoModel = {
-  getByUser(user, successFn, errorFn){
+export const TodoModel = {// 所有跟 Todo 相关的 LeanCloud 操作都放到这里
+  getByUser(user, successFn, errorFn) {
     // 文档见 https://leancloud.cn/docs/leanstorage_guide-js.html#批量操作
     let query = new AV.Query('Todo')
-    query.equalTo('deleted', false);
+    // query.equalTo('deleted', false);
     query.find().then((response) => {
       let array = response.map((t) => {
-        return {id: t.id, ...t.attributes}
+        return { id: t.id, ...t.attributes }
       })
       successFn.call(null, array)
     }, (error) => {
       errorFn && errorFn.call(null, error)
     })
   },
-  create({status, title, deleted}, successFn, errorFn){
-    let Todo = AV.Object.extend('Todo') // 记得把多余的分号删掉，我讨厌分号
-    let todo = new Todo()
+
+  create({ status, title, deleted }, successFn, errorFn) {
+    let Todo = AV.Object.extend('Todo') //建立todo数据库
+    let todo = new Todo()//新建todo对象
     todo.set('title', title)
     todo.set('status', status)
     todo.set('deleted', deleted)
@@ -41,13 +49,14 @@ export const TodoModel = {
     todo.setACL(acl);
 
     todo.save().then(function (response) {
+      console.log(response)
       successFn.call(null, response.id)
     }, function (error) {
       errorFn && errorFn.call(null, error)
     });
 
   },
-  update({id, title, status, deleted}, successFn, errorFn){
+  update({ id, title, status, deleted }, successFn, errorFn) {
     // 文档 https://leancloud.cn/docs/leanstorage_guide-js.html#更新对象
     let todo = AV.Object.createWithoutData('Todo', id)
     title !== undefined && todo.set('title', title)
@@ -67,13 +76,21 @@ export const TodoModel = {
       successFn && successFn.call(null)
     }, (error) => errorFn && errorFn.call(null, error))
   },
-  destroy(todoId, successFn, errorFn){
+
+  destroy(todoId, successFn, errorFn) {
+    // 文档 https://leancloud.cn/docs/leanstorage_guide-js.html#删除对象
+    let todo = AV.Object.createWithoutData('Todo', todoId)//在todo表中删除为todoid的值
+    todo.destroy().then(function (response) {
+      successFn && successFn.call(null)
+    }, function (error) {
+      errorFn && errorFn.call(null, error)
+    });
     // 我们不应该删除数据，而是将数据标记为 deleted
-    TodoModel.update({id: todoId, deleted: true}, successFn, errorFn)
+    // TodoModel.update({id: todoId, deleted: true}, successFn, errorFn)
   }
 }
 
-export function signUp (email, username, password, successFn, errorFn) {
+export function signUp(username, password, email, successFn, errorFn) {//leancloud的用户注册API
   // 新建 AVUser 对象实例
   var user = new AV.User()
   // 设置用户名
@@ -81,52 +98,41 @@ export function signUp (email, username, password, successFn, errorFn) {
   // 设置密码
   user.setPassword(password)
   // 设置邮箱
-  user.setEmail(email)
-
-  user.signUp().then(function (loginedUser) {
+  user.setEmail(email);
+  user.signUp().then(function (loginedUser) {//注册
     let user = getUserFromAVUser(loginedUser)
-    successFn.call(null, user)
+    successFn.call(null, user)//成功回调
   }, function (error) {
-    errorFn.call(null, error)
-  })
-
-  return undefined
-
-}
-
-export function signIn (username, password, successFn, errorFn) {
-  AV.User.logIn(username, password).then(function (loginedUser) {
-    let user = getUserFromAVUser(loginedUser)
-    successFn.call(null, user)
-  }, function (error) {
-    errorFn.call(null, error)
+    errorFn.call(null, error)//失败回调
   })
 }
 
-export function getCurrentUser () {
+export function signIn(username, password, successFn, errorFn) {//leancloud的登录注册API
+  AV.User.logIn(username, password).then(function (loginedUser) {//注册
+    let user = getUserFromAVUser(loginedUser)
+    successFn.call(null, user)//成功回调
+  }, function (error) {
+    errorFn.call(null, error)//失败回调
+  })
+}
+
+export function getCurrentUser() {//获取当前缓存的用户信息
   let user = AV.User.current()
   if (user) {
     return getUserFromAVUser(user)
-  } else {
-    return null
   }
 }
-export function signOut () {
+
+export function signOut() {//登出操作
   AV.User.logOut()
-  return undefined
 }
 
-export function sendPasswordResetEmail (email, successFn, errorFn) {
+export function sendPasswordResetEmail(email, successFn, errorFn) {
   AV.User.requestPasswordReset(email).then(function (success) {
-    successFn.call()
+    successFn.call(null, success)
+    alert('邮件已发送，请注意查收')
   }, function (error) {
     errorFn.call(null, error)
+    alert('邮件发送不成功')
   })
-}
-
-function getUserFromAVUser (AVUser) {
-  return {
-    id: AVUser.id,
-    ...AVUser.attributes
-  }
 }
