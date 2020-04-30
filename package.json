@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-      "jquery": "^3.4.1",
+      "jquery": "^3.5.0",
       "leancloud-realtime": "^4.3.1",
       "leancloud-storage": "^3.15.0",
       "normalize.css": "^8.0.1",
